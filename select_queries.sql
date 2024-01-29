@@ -1,29 +1,52 @@
-select count(musician_id), genre_id  from genre_of_singer
-group by genre_id;
+select duration, name_of_track  from tracks -- Exe.2 task 1
+where duration = (select max(duration) from tracks);
 
-select collection_name from collections c
-where data_of_prod between '2019-01-01' and '2020-12-31'; -- в задании не ясно включительно или нет
+select name_of_track from tracks -- Exe.2 task 2
+where duration >= 210;
 
-select avg(duration), albums_id  from tracks t
-group by albums_id
-order by albums_id;
+select collection_name from collections c -- Exe.2 task 3
+where data_of_prod between '2018-01-01' and '2020-12-31'; 
 
-select name_musician from musicians m
-join album_of_singers aos on m.musician_id = aos.musician_id
-join albums a on aos.albums_id = a.albums_id
-where data_of_prod not between '2020-01-01' and '2020-12-31'
-group by name_musician; -- ЛСП имеет 2 альбома один из которых не проходит условие
+select name_musician from musicians -- Exe.2 task 4
+where name_musician not like '% %';
 
-select collection_name from collections c
+insert into tracks (albums_id, name_of_track, duration) -- добавил запись, так как результат следующего запроса был пустой
+values(2, 'Ты только мой', 242);
+
+select name_of_track from tracks -- Exe.2 task 5
+where name_of_track like '%my%' or name_of_track like '%мой%';
+
+select genre, count(musician_id)  from genre_of_singer gos -- Exe.3 task 1
+left join genres g on g.genre_id = gos.genre_id 
+group by genre;
+
+select count(track_id) from albums a -- Exe.3 task 2
+join tracks t ON t.albums_id = a.albums_id
+where a.data_of_prod between '2019-01-01' and '2020-12-31';
+
+select album_name, avg(duration)  from tracks t -- Exe.3 task 3
+join album_of_singers aos on aos.albums_id = t.albums_id
+join albums a on a.albums_id = aos.albums_id 
+group by album_name
+order by album_name;
+
+select distinct m.name_musician from musicians m -- Exe.3 task 4
+where m.name_musician not in (
+select name_musician from musicians m2 
+left join album_of_singers aos on aos.musician_id = m2.musician_id
+left join albums a on a.albums_id = aos.albums_id
+where a.data_of_prod between '2020-01-01' and '2020-12-31')
+order by name_musician;
+
+select distinct collection_name from collections c -- Exe.3 task 5
 join singer_in_collection sic on sic.collections_id  = c.collections_id
 join tracks t on t.track_id = sic.track_id
 join albums a on a.albums_id = t.albums_id
 join album_of_singers aos on aos.albums_id = a.albums_id
 join musicians m on m.musician_id = aos.musician_id
-where m.musician_id = 4
-group by collection_name;
+where m.name_musician = 'Three Days Grace' ;
 
-select album_name, count(*) from albums a 
+select album_name, count(*) from albums a -- Exe.4 task 1
 left join album_of_singers aos on a.albums_id = aos.albums_id
 left join musicians m on aos.musician_id = m.musician_id
 left join genre_of_singer gos on m.musician_id = gos.musician_id 
@@ -32,19 +55,21 @@ group by album_name
 having count(*) > 1;
 
 
-select name_of_track from tracks t
+select name_of_track from tracks t -- Exe.4 task 2
 full join singer_in_collection sic on t.track_id = sic.track_id
 where sic.track_id is null;
 
-select name_musician, t.duration  from musicians m
+select name_musician from musicians m --Exe.4 task 3
 left join album_of_singers aos on m.musician_id = aos.musician_id
 left join albums a on aos.albums_id = a.albums_id
 left join tracks t on a.albums_id = t.albums_id
-order by t.duration
-limit 5;
+where t.duration = (select min(duration) from tracks)
+group by m.name_musician, t.duration;
 
-select album_name, count(track_id) from albums a
-left join tracks t on a.albums_id = t.albums_id
+select album_name from albums a --Exe.4 task 4
+join tracks t on a.albums_id = t.albums_id 
 group by album_name
-order by count(track_id)
-limit 3;
+having count(track_id) < (select count(t.track_id) from albums a
+join tracks t on a.albums_id = t.albums_id
+group by a.album_name
+limit 1);

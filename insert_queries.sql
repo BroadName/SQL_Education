@@ -47,7 +47,7 @@ values(1, 1),
 	  (4, 6),
 	  (4, 7);
 
-insert into tracks (albums_id, name_of_track, time)
+insert into tracks (albums_id, name_of_track, duration)
 values(1, 'Не с начала', 125),
 	  (1, 'Кем ты стал', 236),
 	  (1, 'Всего лишь писатель', 209),
@@ -73,7 +73,7 @@ values(1, 'Не с начала', 125),
 	  (2, 'Крокодиловы слёзы', 160),
 	  (2, 'Жук в муравейнике', 240);
 	 
-insert into tracks (albums_id, name_of_track, time)
+insert into tracks (albums_id, name_of_track, duration)
 values(3, 'Ползать', 203),
 	  (3, 'Монетка', 200),
 	  (3, 'Деньги не проблема', 237),
@@ -103,7 +103,7 @@ values(3, 'Ползать', 203),
 	  (4, '10 негритят', 197),
 	  (4, 'Вспоминай', 206);
 
-insert into tracks (albums_id, name_of_track, time)
+insert into tracks (albums_id, name_of_track, duration)
 values(5, 'Вояджер-1', 218),
 	  (5, 'Выход в город', 188),
 	  (5, 'Миокард', 182),
@@ -125,7 +125,7 @@ values(5, 'Вояджер-1', 218),
 	  (5, 'Опыт отсутствия', 194),
 	  (5, 'Вереница', 244);
 
-insert into tracks (albums_id, name_of_track, time)
+insert into tracks (albums_id, name_of_track, duration)
 values(6, 'Bitter Taste', 242),
 	  (6, 'Break', 193),
 	  (6, 'World So Cold', 243),
